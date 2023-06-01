@@ -21,54 +21,77 @@
           <div class="title">{{entry.title}}</div>
           <!-- Author -->
           <div class="author">
-          {%- for author in entry.author_array -%}
-            {%- assign author_is_self = false -%}
-            {%- if author.last == site.scholar.last_name%}
-              {%- if site.scholar.first_name contains author.first -%}
-                {%- assign author_is_self = true -%}
-              {%- endif -%}
-            {%- endif -%}
-            {%- assign coauthor_url = nil -%}
-            {%- if site.data.coauthors[author.last] -%}
-              {%- for coauthor in site.data.coauthors[author.last] -%}
-                {%- if coauthor.firstname contains author.first -%}
-                  {%- assign coauthor_url = coauthor.url -%}
-                  {%- break -%}
-                {%- endif -%}
-              {%- endfor -%}
-            {%- endif -%}
-            
-            {%- if forloop.length == 1 -%}
-              {%- if author_is_self %}
-                <em>{{author.last}}, {{author.first}}</em>
-              {%- else -%}
-                {{author.last}}, {{author.first}}
-              {%- endif -%}
-            {%- else -%}
-              {%- unless forloop.last -%}
-                {% if author_is_self %}
-                  <em>{{author.last}}, {{author.first}}</em>,&nbsp;
-                {%- else -%}
-                  {% if coauthor_url -%}
-                    <a href="{{coauthor_url}}">{{author.last}}, {{author.first}}</a>,&nbsp;
-                  {%- else -%}
-                    {{author.last}}, {{author.first}},&nbsp;
-                  {%- endif -%}
-                {%- endif -%}
-              {%- else -%}
-                {% if author_is_self -%}
-                  and <em>{{author.last}}, {{author.first}}</em>
-                {% else -%}
-                  {%- if coauthor_url -%}
-                    and <a href="{{coauthor_url}}">{{author.last}}, {{author.first}}</a>
-                  {% else -%}
-                    and {{author.last}}, {{author.first}}
-                  {%- endif -%}
-                {%- endif -%}
-              {%- endunless -%}
-            {%- endif -%}
-          {%- endfor %}
-          </div>
+            {% for author in entry.author_array %}
+            {% assign author_is_self = false %}
+            {% assign author_is_coauthor = false %}
+            {% if author.last contains site.scholar.last_name%}
+            {% if site.scholar.first_name contains author.first%}
+            {% assign author_is_self = true %}
+            {% if author.last contains "*" %}
+            {% assign author_is_coauthor = true %}
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% assign coauthor_url = nil %}
+
+            {% assign simplified_name = author.last | remove: '*' %}
+            {% if site.data.coauthors[author.last]%}
+            {% for coauthor in site.data.coauthors[author.last] %}
+            {% if coauthor.firstname contains author.first %}
+            {% assign coauthor_url = coauthor.url %}
+            {% break %}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+
+            {% if site.data.coauthors[simplified_name]%}
+            {% for coauthor in site.data.coauthors[simplified_name] %}
+            {% if coauthor.firstname contains author.first %}
+            {% assign coauthor_url = coauthor.url %}
+            {% break %}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+
+            {% if forloop.length == 1 %}
+            {% if author_is_self %}
+            {% if author_is_coauthor %}
+            <em><b>{{author.first}} {{site.scholar.last_name}}</b></em>*
+            {% else %}
+            <em><b>{{author.first}} {{author.last}}</b></em>
+            {% endif %}
+            {% else %}
+            {{author.first}} {{author.last}}
+            {% endif %}
+            {% else %}
+            {% unless forloop.last %}
+            {% if author_is_self %}
+            {% if author_is_coauthor %}
+            <em><b>{{author.first}} {{site.scholar.last_name}}</b></em>*,
+            {% else %}
+            <em><b>{{author.first}} {{author.last}}</b></em>,
+            {% endif %}
+            {% else %}
+            {% if coauthor_url %}
+            <a href="{{coauthor_url}}" target="_blank">{{author.first}} {{author.last}}</a>,
+            {% else %}
+            {{author.first}} {{author.last}},
+            {% endif %}
+            {% endif %}
+            {% else %}
+            {% if author_is_self %}
+            and <em><b>{{author.first}} {{author.last}}</b></em>
+            {% else %}
+            {% if coauthor_url %}
+            and <a href="{{coauthor_url}}" target="_blank">{{author.first}} {{author.last}}</a>
+            {% else %}
+            and {{author.first}} {{author.last}}
+            {% endif %}
+            {% endif %}
+            {% endunless %}
+            {% endif %}
+            {% endfor %}
+        </div>
 
           <!-- Journal/Book title and date -->
           {% if entry.type == "article" -%}
