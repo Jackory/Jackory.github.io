@@ -5,7 +5,7 @@ permalink: /
 
 profile:
   align: left
-  image: jyh_2023.jpeg
+  image: jyh_2023_2.jpeg
   address: 
 
 news: False  # includes a list of news items
