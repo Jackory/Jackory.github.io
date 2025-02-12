@@ -1,9 +1,9 @@
 ---
 layout: page
 permalink: /more/
-title: More
+title: Details
 description: Some information about me
-years: [2022, 2023]
+years: [2022, 2023, 2024, 2025]
 nav: true
 ---
 <!-- _pages/more.md -->
@@ -12,9 +12,12 @@ nav: true
 
 ##### Nanjing University
 
-- School of Management and Engineering
 - Major in Automation
-- 2018.9 - Now
+- 2018.9 - 2022.09
+
+##### Tsinghua University
+- PhD in Department of Automation
+- 2022.9 - Presents
 
 <br>
 <br>
