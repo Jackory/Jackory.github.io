@@ -1,9 +1,9 @@
 ---
 layout: page
 permalink: /more/
-title: Details
+title: More
 description: Some information about me
-years: [2024, 2025]
+years: [2026, 2025, 2024, 2022]
 nav: true
 ---
 <!-- _pages/more.md -->

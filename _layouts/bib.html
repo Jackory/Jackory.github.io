@@ -111,6 +111,11 @@
           <div class="periodical">
             {{ periodical | strip }}
           </div>
+          {%- if entry.award %}
+          <div class="award">
+            <i class="fas fa-trophy"></i> <em>{{ entry.award }}</em>
+          </div>
+          {%- endif %}
         {%- endif %}
         
           <!-- Links/Buttons -->

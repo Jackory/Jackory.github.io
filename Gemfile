@@ -13,7 +13,8 @@ group :jekyll_plugins do
     gem 'jekyll-target-blank'
     gem 'jekyll-twitter-plugin'
     gem 'jemoji'
-    gem 'mini_racer'
+    # gem 'mini_racer'  # 注释掉有问题的 mini_racer
+    gem 'execjs'        # 添加替代的 JavaScript 运行时
     gem 'unicode_utils'
     gem 'webrick'
 end
